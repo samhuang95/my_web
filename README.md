@@ -1,5 +1,7 @@
 # Project goals
 This project is for share my tech knowledge web<br>
+[![image](https://github.com/samhuang95/my_web/assets/124756719/8c1ebb8d-abdb-4500-bc91-cdde83b83e9a)](https://youtu.be/RfNeaCq9UZg)
+
 
 # How to build the project
 1. Build the MongoDB server<br>
