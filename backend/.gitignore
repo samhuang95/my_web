@@ -1,0 +1,7 @@
+node_modules
+logs
+.env
+prod.env
+package-lock.json
+deploy.cmd
+/docs/global-bundle.pem
