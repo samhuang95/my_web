@@ -1,0 +1,20 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+version: '3.9'
+networks:
+  webnet:
+    driver: bridge
+
+services:
+  mongodb:
+    image: mongo:4.4.18
+    hostname: web-db
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME={enter user name}
+      - MONGO_INITDB_ROOT_PASSWORD={enter db password}
+    networks:
+      - webnet
+    restart: always
