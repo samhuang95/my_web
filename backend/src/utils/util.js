@@ -1,5 +1,7 @@
 const crypto = require('crypto');
 const axios = require('axios');
+const { getAccount } = require('../models/account_model.js');
+const { ReturnDocument } = require('mongodb');
 
 const generateSalt = (length = 16) => {
     return crypto.randomBytes(length).toString('hex');
@@ -26,7 +28,7 @@ const encryptToSHA256 = (input) => {
  * @returns true 代表含有 undefined
  */
 const hasUndefinedData = (list) => {
-    return !list.every((element) => element !== undefined);
+    return !list.every((element) => element !== undefined || element === null);
 };
 
 const requestImage = (url) => {
@@ -66,6 +68,15 @@ const isValidEmail = (email) => {
     return emailRegex.test(email);
 };
 
+const isEmailExist = async (email) => {
+    const mail = await getAccount({ email: email });
+
+    if (Object.keys(mail).length === 0) {
+        return false;
+    }
+    return true;
+};
+
 const downloadPDF = async (url) => {
     const response = await axios({
         method: 'get',
@@ -85,5 +96,6 @@ module.exports = {
     requestImage,
     getFileSize,
     isValidEmail,
+    isEmailExist,
     downloadPDF,
 };

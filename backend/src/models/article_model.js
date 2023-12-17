@@ -19,6 +19,7 @@ const insertArticle = async (data) => {
         summary: data.summary,
         content: data.content,
         created_at: now,
+        updated_at: now,
     });
 };
 

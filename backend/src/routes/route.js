@@ -1,17 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const c = require('../controllers/controller.js');
-const m = require('../middlewares/middleware.js');
+const articleRoute = require('./article_route.js');
+const accountRoute = require('./account_route.js');
 
-router.get('/article-list', c.getArticleList);
-
-router.post('/article', c.createArticle, m.createArticle);
-
-router.patch('/article', c.updateArticle);
-
-router.delete('/article', c.deleteArticle);
-
-router.get('/health-check', c.healthCheck);
+router.use('/', articleRoute);
+router.use('/', accountRoute);
 
 module.exports = router;

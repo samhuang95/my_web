@@ -5,6 +5,7 @@ const { StatusCodes } = require('http-status-codes');
 
 const logger = require('./src/utils/logger');
 const r = require('./src/routes/route');
+
 const morganMiddleware = require('./src/middlewares/morgan.middleware');
 
 var app = express();
@@ -19,6 +20,7 @@ app.use(
 );
 
 app.use('/', r);
+
 
 /* Error handler middleware */
 app.use((error, req, res, next) => {

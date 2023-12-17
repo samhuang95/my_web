@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 
-const util = require('../utils/util');
-const { LeaveAPIError } = require('../configs/error');
+const util = require('../utils/util.js');
+const { LeaveAPIError } = require('../configs/error.js');
 const { PRICING_MODE_LIST } = require('../configs/type.js');
 const { usersDB } = require('../models/model.js');
 const logger = require('../utils/logger.js');
@@ -34,66 +34,6 @@ const createArticle = async (req, res, next) => {
 
             res.status(statusCode);
             res.json(result);
-            return;
-        }
-
-        next(error);
-    }
-
-    next();
-};
-
-// TODO
-const createModels = async (req, res, next) => {
-    let results = {};
-    let statusCode = StatusCodes.OK;
-
-    try {
-        const data = {
-            userID: req.body.userID,
-            modelID: req.body.modelID,
-            bucket: req.body.bucket,
-            dir: req.body.dir,
-            modelName: req.body.modelName,
-            summary: req.body.summary,
-            description: req.body.description,
-            limitation: req.body.limitation,
-            input: req.body.input,
-            output: req.body.output,
-            useCase: req.body.useCase,
-            outOfScopeUseCases: req.body.outOfScopeUseCases,
-            businessValue: req.body.businessValue,
-            coverUrl: req.body.coverUrl,
-            source: req.body.source,
-            category: req.body.category,
-            tags: req.body.tags,
-            pricing: req.body.pricing,
-            keyAttribute: req.body.keyAttribute,
-            tiers: req.body.tiers,
-            example: req.body.example,
-            processingInfo: req.body.processingInfo,
-            author: req.body.author,
-        };
-
-        const checkData = Object.values(data);
-
-        if (util.hasUndefinedData(checkData)) {
-            throw new LeaveAPIError(
-                'please send userID, modelID, bucket, dir, modelName, ' +
-                    'category, summary, description, limitation, input, output, useCase, ' +
-                    'outOfScopeUseCases, businessValue, coverUrl, source, pricing, tags , ' +
-                    'tiers, keyAttribute, example, processingInfo and author.'
-            );
-        }
-
-        res.locals.modelData = data;
-    } catch (error) {
-        if (error instanceof LeaveAPIError) {
-            statusCode = StatusCodes.BAD_REQUEST;
-            results.message = error.message;
-
-            res.status(statusCode);
-            res.json(results);
             return;
         }
 
@@ -154,7 +94,6 @@ const updatePricing = async (req, res, next) => {
 };
 
 module.exports = {
-    createModels,
     createArticle,
     updatePricing,
 };
