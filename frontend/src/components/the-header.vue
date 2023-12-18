@@ -100,7 +100,7 @@ watch(
 );
 
 const { isLoading, execute } = useAsyncState(
-  async () => (await articleStore.getArticleList()).data,
+  async () => (await articleStore.getPublishedArticleList()).data,
   [],
   {
     resetOnExecute: false,

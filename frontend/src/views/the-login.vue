@@ -18,7 +18,7 @@
               v-model="emailInput"
               :type="'text'"
               class="w-full"
-              @keyup.enter="login"
+              @keyup.enter="submitLogin"
             />
             <span
               v-if="hasClickSubmitBtn && emailInput.trim() === ''"
@@ -34,7 +34,7 @@
               v-model="passwordInput"
               :type="'password'"
               class="w-full"
-              @keyup.enter="login"
+              @keyup.enter="submitLogin"
             />
             <span
               v-if="hasClickSubmitBtn && emailInput.trim() === ''"

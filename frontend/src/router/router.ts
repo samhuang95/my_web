@@ -11,7 +11,7 @@ export enum RouteName {
   HOME = 'home',
 
   HOME_FILTER = 'home-filter',
-  RTF_EDITOR = 'rtf-editor',
+  ARTICLE_CREATE = 'article-create',
   ARTICLE = 'the-article',
   ADMIN = 'the-admin',
   LOGIN = 'the-login',
@@ -44,9 +44,9 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   {
-    path: `/rtf-editor`,
-    name: RouteName.RTF_EDITOR,
-    component: () => import('../views/the-article-editor.vue'),
+    path: `/article-create`,
+    name: RouteName.ARTICLE_CREATE,
+    component: () => import('../views/the-article-create.vue'),
   },
 
   {

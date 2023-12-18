@@ -1,6 +1,49 @@
 <template>
   <div class="flex flex-col gap-2 p-10">
-    <div>
+    <div class="grid gap-[1rem]">
+      <div class="flex gap-[1rem] items-center">
+        <div class="grid gap-[1.5rem]">
+          <H4 class="h4">Title</H4>
+          <H4 class="h4">English title</H4>
+          <H4 class="h4">Article tag</H4>
+          <H4 class="h4">Statue</H4>
+          <H4 class="h4">Cover image URL</H4>
+          <H4 class="h4">Summary</H4>
+        </div>
+        <div class="grid gap-[1rem] w-2/3">
+          <base-input
+            v-model="titleInput"
+            :type="'text'"
+            placeholder="Please enter the article title"
+          />
+          <base-input
+            v-model="englishTitleInput"
+            :type="'text'"
+            placeholder="The English title will used on the url."
+          />
+          <base-input
+            v-model="articleTagInput"
+            :type="'text'"
+            placeholder="Please enter 'tech' or 'marketing'"
+          />
+          <base-input
+            v-model="statueInput"
+            :type="'text'"
+            placeholder="Please enter 'published' or 'draft'"
+          />
+          <base-input
+            v-model="coverUrlInput"
+            :type="'text'"
+            placeholder="Please upload the cover image and paste the url here."
+          />
+          <base-input
+            v-model="summaryInput"
+            :type="'text'"
+            placeholder="Maximum number of characters: 150."
+          />
+        </div>
+      </div>
+      <H3 class="h3 m-auto">Content</H3>
       <QuillEditor
         ref="rtfEditor"
         class="h-[60vh]"
@@ -8,22 +51,11 @@
         toolbar="full"
       />
     </div>
-    <div class="flex gap-2">
-      <base-btn
-        label="Get Html"
-        btn-style="unelevated"
-        btn-color="brand"
-        :disable="isLoading"
-        @click="getContent"
-      />
-      <base-btn
-        label="Clear"
-        btn-style="unelevated"
-        btn-color="red"
-        :disable="isLoading"
-        @click="clear"
-      />
-    </div>
+    <baseBtn
+      label="Submit"
+      btn-style="unelevated"
+      btn-color="blue"
+    />
   </div>
 </template>
 
@@ -31,18 +63,37 @@
   setup
   lang="ts"
 >
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { QuillEditor } from '@vueup/vue-quill';
 
 import baseBtn from '../components/base-btn.vue';
+import baseInput from '../components/base-input.vue';
 
 import { uploadToS3 } from '../common/aws';
 import { useQuasar, QSpinnerGears } from 'quasar';
+import { watch } from 'fs';
 
 const $q = useQuasar();
 
+const hasClickSubmitBtn = ref<boolean>(false);
+
 const rtfEditor = ref<QuillEditor | null>(null);
+
+watchEffect(() => {
+  console.log('rtfEditor:::', rtfEditor.value);
+  console.log('rtfEditor:::', rtfEditor.value);
+});
+
 const isLoading = ref<boolean>(false);
+const titleInput = ref<string>('');
+const englishTitleInput = ref<string>('');
+const articleTagInput = ref<string>('');
+const statueInput = ref<string>('');
+const coverUrlInput = ref<string>('');
+const summaryInput = ref<string>('');
+const contentInput = ref<string>('');
+
+const isInputEmpty = ref<boolean>(false);
 
 /**
  * parse data URI into Blob
@@ -134,7 +185,23 @@ const getContent = async () => {
   isLoading.value = false;
 };
 
-const clear = () => {
-  rtfEditor.value?.setHTML('');
+const emptyInputCheck = () => {
+  if (
+    hasClickSubmitBtn.value &&
+    titleInput.value.trim() === '' &&
+    englishTitleInput.value.trim() === '' &&
+    articleTagInput.value.trim() === '' &&
+    statueInput.value.trim() === '' &&
+    coverUrlInput.value.trim() === '' &&
+    summaryInput.value.trim() === ''
+  ) {
+    isInputEmpty.value = true;
+  } else {
+    isInputEmpty.value = false;
+  }
+};
+
+const handleSubmit = async () => {
+  //
 };
 </script>

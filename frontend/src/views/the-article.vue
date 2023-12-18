@@ -43,7 +43,7 @@ const articleStore = useArticleStore();
 const route = useRoute();
 const articleData = ref<Article>();
 const { isLoading, execute } = useAsyncState(
-  async () => (await articleStore.getArticleList()).data,
+  async () => (await articleStore.getPublishedArticleList()).data,
   [],
   {
     resetOnExecute: false,

@@ -1,7 +1,7 @@
 <template>
   <q-page class="max-width m-auto">
-    <div v-if="props.isOpenEditor"><the-article-editor /></div>
     <div v-if="props.isOpenManagement"><the-article-management /></div>
+    <div v-if="props.isOpenCreatePage"><the-article-create /></div>
   </q-page>
 </template>
 
@@ -9,11 +9,11 @@
   setup
   lang="ts"
 >
-import theArticleEditor from './the-article-editor.vue';
+import theArticleCreate from './the-article-create.vue';
 import theArticleManagement from './the-article-management.vue';
 
 interface Props {
-  isOpenEditor: boolean;
+  isOpenCreatePage: boolean;
   isOpenManagement: boolean;
 }
 
