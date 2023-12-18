@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { getLocalStageData } from '../common/utils';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -13,11 +14,12 @@ export enum RouteName {
   RTF_EDITOR = 'rtf-editor',
   ARTICLE = 'the-article',
   ADMIN = 'the-admin',
+  LOGIN = 'the-login',
 }
 
 export enum Role {
-  SELLER = 'seller',
-  BUYER = 'buyer',
+  ADMIN = 'admin',
+  USER = 'user',
 }
 
 const routes: Array<RouteRecordRaw> = [
@@ -48,9 +50,10 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   {
-    path: `/admin`,
-    name: RouteName.ADMIN,
-    component: () => import('../views/the-admin.vue'),
+    path: `/login`,
+    name: RouteName.LOGIN,
+    component: () => import('../views/the-login.vue'),
+    beforeEnter: (to, from, next) => goToHome(to, from, next),
   },
 
   {
@@ -62,6 +65,17 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/:pathMatch(.*)*',
     redirect: '/',
+  },
+  {
+    path: '/',
+    meta: { authRequired: true, role: Role.ADMIN },
+    children: [
+      {
+        path: `/admin`,
+        name: RouteName.ADMIN,
+        component: () => import('../views/the-admin.vue'),
+      },
+    ],
   },
 ];
 
@@ -79,5 +93,29 @@ const router = createRouter({
     return { top: 0 };
   },
 });
+
+router.beforeEach(async (to, from, next) => {
+  const { authRequired, role } = to.meta;
+  const loginFlag = getLocalStageData('isLogIn', 'boolean');
+
+  if (!authRequired) {
+    next();
+    return;
+  }
+
+  if (authRequired && role === Role.ADMIN && !loginFlag) {
+    next({ name: RouteName.LOGIN });
+  } else if (authRequired && role === Role.USER && loginFlag) {
+    next({ name: RouteName.HOME });
+  } else {
+    next();
+  }
+});
+
+const goToHome = (to, from, next) => {
+  const loginFlag = getLocalStageData('isLogIn', 'boolean');
+  if (loginFlag) next({ name: RouteName.HOME });
+  next();
+};
 
 export default router;

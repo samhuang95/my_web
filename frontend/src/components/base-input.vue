@@ -5,7 +5,7 @@
       outlined
       dense
       no-error-icon
-      color="brand-400"
+      color=""
       :placeholder="props.placeholder"
       :hint="props.hint"
       :disable="props.disable"
@@ -21,7 +21,6 @@
 >
 import { useVModel } from '@vueuse/core';
 import { QInput } from 'quasar';
-import { ref, watch } from 'vue';
 
 interface Props {
   modelValue: string | number | null;
@@ -41,15 +40,6 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
 }>();
 
-// const data = ref('')
-// watch(()=>props.modelValue, (newValue)=>{
-//   data.value = newValue
-// }, {
-//   immediate: true
-// })
-// watch(data, (newValue)=>{
-//   emit('update:modelValue', newValue)
-// })
 const data = useVModel(props, 'modelValue');
 </script>
 <style

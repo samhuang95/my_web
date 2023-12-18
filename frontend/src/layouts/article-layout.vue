@@ -12,6 +12,7 @@
       :model-value="drawerVisible"
       @update:model-value="(value) => toggleDrawerVisible(value)"
     />
+
     <q-drawer
       v-model="drawerVisible"
       :breakpoint="290"
@@ -70,11 +71,14 @@
   lang="ts"
 >
 import TheHeader from '../../src/components/the-header.vue';
+
 import { useToggle } from '@vueuse/core';
+
 import { ref } from 'vue';
 import { RouteName } from '../router/router';
 import BaseBtn from '../components/base-btn.vue';
 const [drawerVisible, toggleDrawerVisible] = useToggle(false);
+
 const menuList = [
   {
     label: 'Catalog',

@@ -20,6 +20,7 @@
           class="text-brandBlue-100"
           @click="handleSelectedArticle('marketing')"
         />
+
         <base-btn
           :label="`Tech Note(${articleCounter('tech')})`"
           btn-style="flat"
@@ -40,6 +41,31 @@
           :href="'https://github.com/samhuang95'"
           target="_blank"
         />
+
+        <base-btn
+          v-if="!hasLogIn"
+          :to="{ name: RouteName.LOGIN }"
+          label="Login"
+          btn-style="unelevated"
+          btn-color="blue"
+          class="text-brandBlue-100"
+        />
+
+        <base-btn
+          v-if="hasLogIn"
+          :to="{ name: RouteName.ADMIN }"
+          label="Admin Page"
+          btn-style="unelevated"
+          btn-color="blue"
+        />
+        <base-btn
+          v-if="hasLogIn"
+          :to="{ name: RouteName.ADMIN }"
+          label="Log out"
+          btn-style="unelevated"
+          btn-color="grey"
+          @click="logout"
+        />
       </div>
     </div>
   </q-header>
@@ -49,7 +75,7 @@
   lang="ts"
   setup
 >
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect, reactive } from 'vue';
 
 import { useVModel } from '@vueuse/core';
 import logo from '/logo.svg';
@@ -58,10 +84,20 @@ import { useArticleStore } from '../stores/article.store';
 import router, { RouteName } from '../router/router';
 import { useAsyncState } from '@vueuse/core';
 import { Article } from '../types/article.type';
+import { getLocalStageData, removeLocalStageData } from '../common/utils';
 
 const articleStore = useArticleStore();
 
 const articleData = ref<Article[]>([]);
+
+const hasLogIn = ref(getLocalStageData('isLogIn'));
+
+watch(
+  () => getLocalStageData('isLogIn'),
+  (newValue) => {
+    hasLogIn.value = newValue;
+  }
+);
 
 const { isLoading, execute } = useAsyncState(
   async () => (await articleStore.getArticleList()).data,
@@ -103,5 +139,11 @@ const handleSelectedArticle = (tagName: string) => {
     name: RouteName.HOME_FILTER,
     params: { articleTag: tagName },
   });
+};
+
+const logout = () => {
+  removeLocalStageData('isLogIn');
+  router.push({ name: RouteName.HOME });
+  router.go(0);
 };
 </script>

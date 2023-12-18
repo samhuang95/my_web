@@ -28,6 +28,7 @@ export enum BtnColor {
   TEAL = 'teal',
   BLACK = 'black',
   GREY = 'grey',
+  BLUE = 'blue',
 }
 
 export enum BtnSize {
@@ -90,6 +91,8 @@ const resultBtnClass = computed(() => {
     classList.push(isUnelevated ? 'bg-grey-800' : 'text-grey-800');
   } else if (props.btnColor === 'grey') {
     classList.push(isUnelevated ? 'bg-[#858585]' : 'text-[#858585]');
+  } else if (props.btnColor === 'blue') {
+    classList.push(isUnelevated ? 'bg-[#5580A0]' : 'text-[#5580A0]');
   }
 
   if (props.btnSize === BtnSize.MD) classList.push('min-h-[36px]');

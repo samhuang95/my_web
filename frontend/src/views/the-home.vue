@@ -79,8 +79,7 @@ const { isLoading, execute } = useAsyncState(
 
       watchEffect(() => {
         const articleTag = route.params.articleTag;
-        console.log(articleTag);
-
+        
         const keyword = searchText.value.toLowerCase().trim();
 
         if (articleTag !== undefined) {
