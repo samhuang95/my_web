@@ -9,17 +9,20 @@ This project is for share my tech knowledge web<br>
 	then get the MONGODB_URL. <br>
 
 2. Add .env file to frontend and backend, the format be like<br>
+
    - frontend<br>
-     VITE_PACKAGE_VERSION='0.0.1'<br>
-     VITE_SERVER={add your API server}<br>
-     
+```bash
+     VITE_PACKAGE_VERSION='0.0.1'
+     VITE_SERVER={add your API server}
+```
    - backend<br>
-     DEV_MODE=true<br>
-     DB_NAME={MongoDB name}<br>
-     MONGODB_USER={MongoDB user name}<br>
-     MONGODB_PASSWORD={MongoDB password}<br>
-     MONGODB_URL={MongoDB host}<br>
-	 
+```bash
+     DEV_MODE=true
+     DB_NAME={MongoDB name}
+     MONGODB_USER={MongoDB user name}
+     MONGODB_PASSWORD={MongoDB password}
+     MONGODB_URL={MongoDB host}
+```	 
 3. Run the vue project<br>
    Use VScode and enter 'npm run dev' in frontend and backend terminal.<br>
    Then the localhost is activate.<br>
