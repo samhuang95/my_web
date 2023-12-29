@@ -15,6 +15,7 @@ export enum RouteName {
   ARTICLE = 'the-article',
   ADMIN = 'the-admin',
   LOGIN = 'the-login',
+  WELCOME = 'welcome',
 }
 
 export enum Role {
@@ -34,6 +35,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/home',
     name: RouteName.HOME,
     component: () => import('../views/the-home.vue'),
+  },
+  {
+    path: '/welcome',
+    name: RouteName.WELCOME,
+    component: () => import('../views/the-welcome.vue'),
   },
 
   {
