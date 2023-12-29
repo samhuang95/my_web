@@ -1,6 +1,6 @@
 # Project goals
 This project is for share my tech knowledge web<br>
-[![image](https://github.com/samhuang95/my_web/assets/124756719/8c1ebb8d-abdb-4500-bc91-cdde83b83e9a)](https://youtu.be/RfNeaCq9UZg)
+![96ab4863-6bd7-4e57-8ddc-8ca2a2191c39 (1)](https://github.com/samhuang95/my_web/assets/124756719/f2ea76c2-24a4-4ecc-a68f-022abcbcfad0)
 
 
 # How to build the project
