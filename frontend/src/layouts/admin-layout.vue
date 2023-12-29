@@ -43,18 +43,21 @@
     >
       <q-scroll-area class="fit">
         <div class="my-[0.5rem] mx-[1rem] grid gap-[1rem]">
-          <H2 class="h2 text-center my-[1rem]">Admin Tool</H2>
+          <H2 class="h2 text-center my-[1rem]">Admin Tools</H2>
           <base-btn
-            label="Rich Text Editor"
+            label="Management"
             btn-style="flat"
-            btn-color="teal"
-            @click="handleOpenEditor()"
-          />
-          <base-btn
-            label="Article Management"
-            btn-style="flat"
-            btn-color="teal"
+            btn-color="blue"
+            :icon="`img:${serverSolid}`"
             @click="handleOpenManagement()"
+          />
+
+          <base-btn
+            label="Create Article"
+            btn-style="flat"
+            btn-color="blue"
+            :icon="`img:${fileArrowUpBlack}`"
+            @click="handleCreateArticle()"
           />
         </div>
       </q-scroll-area>
@@ -63,8 +66,8 @@
     <q-page-container>
       <q-page>
         <the-admin
-          :is-open-editor="isOpenEditor"
           :is-open-management="isOpenManagement"
+          :is-open-create-page="isOpenCreatePage"
         />
       </q-page>
     </q-page-container>
@@ -79,18 +82,20 @@ import { ref } from 'vue';
 import router, { RouteName } from '../router/router';
 import BaseBtn from '../components/base-btn.vue';
 import theAdmin from '../views/the-admin.vue';
+import serverSolid from '../assets/icon/server-solid.svg';
+import fileArrowUpBlack from '../assets/icon/file-arrow-up-black.svg';
 
-const isOpenEditor = ref<boolean>(true);
-const isOpenManagement = ref<boolean>(false);
+const isOpenManagement = ref<boolean>(true);
+const isOpenCreatePage = ref<boolean>(false);
 
-const handleOpenEditor = () => {
-  isOpenEditor.value = true;
+const handleCreateArticle = () => {
+  isOpenCreatePage.value = true;
   isOpenManagement.value = false;
 };
 
 const handleOpenManagement = () => {
   isOpenManagement.value = true;
-  isOpenEditor.value = false;
+  isOpenCreatePage.value = false;
 };
 
 const drawerLeft = ref<boolean>(true);

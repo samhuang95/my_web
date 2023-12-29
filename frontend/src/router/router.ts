@@ -11,10 +11,12 @@ export enum RouteName {
   HOME = 'home',
 
   HOME_FILTER = 'home-filter',
-  RTF_EDITOR = 'rtf-editor',
+  ARTICLE_CREATE = 'article-create',
   ARTICLE = 'the-article',
   ADMIN = 'the-admin',
   LOGIN = 'the-login',
+  SIGNUP = 'the-signup',
+  WELCOME = 'welcome',
 }
 
 export enum Role {
@@ -35,6 +37,11 @@ const routes: Array<RouteRecordRaw> = [
     name: RouteName.HOME,
     component: () => import('../views/the-home.vue'),
   },
+  {
+    path: '/welcome',
+    name: RouteName.WELCOME,
+    component: () => import('../views/the-welcome.vue'),
+  },
 
   {
     path: '/home/:articleTag',
@@ -44,15 +51,21 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   {
-    path: `/rtf-editor`,
-    name: RouteName.RTF_EDITOR,
-    component: () => import('../views/the-article-editor.vue'),
+    path: `/article-create`,
+    name: RouteName.ARTICLE_CREATE,
+    component: () => import('../views/the-article-create.vue'),
   },
 
   {
     path: `/login`,
     name: RouteName.LOGIN,
     component: () => import('../views/the-login.vue'),
+    beforeEnter: (to, from, next) => goToHome(to, from, next),
+  },
+  {
+    path: `/signup`,
+    name: RouteName.SIGNUP,
+    component: () => import('../views/the-signup.vue'),
     beforeEnter: (to, from, next) => goToHome(to, from, next),
   },
 
@@ -68,12 +81,23 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-    meta: { authRequired: true, role: Role.ADMIN },
+    meta: { authRequired: true },
     children: [
       {
         path: `/admin`,
         name: RouteName.ADMIN,
         component: () => import('../views/the-admin.vue'),
+        beforeEnter: (to, from, next) => {
+          // Check the role is admin or not
+          const userRole = getLocalStageData('role');
+          if (userRole === 'admin') {
+            // if user role is admin, approve to admin page
+            next();
+          } else {
+            // if the user is not admin, the url will be redirected to home page.
+            next('/home');
+          }
+        },
       },
     ],
   },

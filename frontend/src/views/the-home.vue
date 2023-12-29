@@ -69,7 +69,7 @@ const articleStore = useArticleStore();
 const filteredArticles = ref<Article[]>([]);
 
 const { isLoading, execute } = useAsyncState(
-  async () => (await articleStore.getArticleList()).data,
+  async () => (await articleStore.getPublishedArticleList()).data,
   [],
   {
     resetOnExecute: false,
@@ -79,7 +79,7 @@ const { isLoading, execute } = useAsyncState(
 
       watchEffect(() => {
         const articleTag = route.params.articleTag;
-        
+
         const keyword = searchText.value.toLowerCase().trim();
 
         if (articleTag !== undefined) {

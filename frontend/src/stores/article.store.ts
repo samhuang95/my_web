@@ -10,14 +10,30 @@ export interface RequestData<T> {
 }
 
 export const useArticleStore = defineStore('article', () => {
-  async function getArticleList() {
+  async function getPublishedArticleList() {
     return request<RequestData<Article[]>, Article>({
       method: 'get',
       url: `/article-list?statue=published`,
     });
   }
+  async function getArticleList() {
+    return request<RequestData<Article[]>, Article>({
+      method: 'get',
+      url: `/article-list`,
+    });
+  }
+
+  async function getArticle(article_id: string) {
+    return request<RequestData<Article[]>, Article>({
+      method: 'get',
+      url: `/article?article_id=${article_id}`,
+    });
+  }
 
   return {
+    getPublishedArticleList,
     getArticleList,
+    getArticle,
+    
   };
 });

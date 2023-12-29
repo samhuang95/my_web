@@ -63,7 +63,7 @@
   setup
   lang="ts"
 >
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useArticleStore } from '../stores/article.store';
 
@@ -72,6 +72,7 @@ import closeWindowIcon from '../assets/icon/close-window-icon.svg';
 import fileArrowUp from '../assets/icon/file-arrow-up.svg';
 import eyeIcon from '../assets/icon/eye-icon.svg';
 import editorIcon from '../assets/icon/editor-icon.svg';
+import { useAsyncState } from '@vueuse/core';
 
 const articleStore = useArticleStore();
 
@@ -83,10 +84,10 @@ const tableColumns = [
     field: 'title',
   },
   {
-    name: 'articleTag',
+    name: 'article_tag',
     align: 'left',
     label: 'Article Tag',
-    field: 'articleTag',
+    field: 'article_tag',
   },
   {
     name: 'statue',
@@ -96,10 +97,10 @@ const tableColumns = [
     sortable: true,
   },
   {
-    name: 'createdAt',
+    name: 'created_at',
     align: 'left',
     label: 'Created Date',
-    field: 'createdAt',
+    field: 'created_at',
     sortable: true,
   },
   {
@@ -110,9 +111,22 @@ const tableColumns = [
   },
 ];
 
-const tableRows = computed(() => {
-  return articleStore.article;
-});
+const tableRows = ref<object[]>([]);
+
+const { isLoading, execute } = useAsyncState(
+  async () => (await articleStore.getArticleList()).data,
+  [],
+  {
+    resetOnExecute: false,
+    onSuccess: (articleList) => {
+      tableRows.value = articleList;
+    },
+  }
+);
+
+const goToEditor = () => {
+  // 
+}
 </script>
 
 <style
