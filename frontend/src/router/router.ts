@@ -15,6 +15,7 @@ export enum RouteName {
   ARTICLE = 'the-article',
   ADMIN = 'the-admin',
   LOGIN = 'the-login',
+  SIGNUP = 'the-signup',
   WELCOME = 'welcome',
 }
 
@@ -61,6 +62,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/the-login.vue'),
     beforeEnter: (to, from, next) => goToHome(to, from, next),
   },
+  {
+    path: `/signup`,
+    name: RouteName.SIGNUP,
+    component: () => import('../views/the-signup.vue'),
+    beforeEnter: (to, from, next) => goToHome(to, from, next),
+  },
 
   {
     path: `/the-article/:eng_title`,
@@ -74,12 +81,23 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-    meta: { authRequired: true, role: Role.ADMIN },
+    meta: { authRequired: true },
     children: [
       {
         path: `/admin`,
         name: RouteName.ADMIN,
         component: () => import('../views/the-admin.vue'),
+        beforeEnter: (to, from, next) => {
+          // Check the role is admin or not
+          const userRole = getLocalStageData('role');
+          if (userRole === 'admin') {
+            // if user role is admin, approve to admin page
+            next();
+          } else {
+            // if the user is not admin, the url will be redirected to home page.
+            next('/home');
+          }
+        },
       },
     ],
   },

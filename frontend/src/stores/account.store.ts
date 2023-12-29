@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { request } from '../common/api';
-import { Account } from '../types/account.type';
+import { Account, inputData } from '../types/account.type';
 
 export interface RequestData<T> {
   message: string;
@@ -15,9 +15,13 @@ export const useAccountStore = defineStore('account', () => {
     });
   }
 
-  // async function registerAccount(account: Account) {
-  //   return 'AA'
-  // }
+  async function createAccount(accountData: inputData) {
+    return request<RequestData<inputData>>({
+      method: 'post',
+      url: `/account`,
+      data: accountData as unknown as undefined,
+    });
+  }
 
   const pairAccount = (inputData: object, comparisonData: object) => {
     if (
@@ -31,8 +35,15 @@ export const useAccountStore = defineStore('account', () => {
     //
   };
 
+  const googleSignUp = (credentials: string) => {
+    // Add Google account login credentials
+    console.log(credentials);
+  };
+
   return {
     getAccount,
+    createAccount,
     pairAccount,
+    googleSignUp,
   };
 });

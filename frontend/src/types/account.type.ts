@@ -6,3 +6,9 @@ export interface Account {
   role: string;
   created_at: string;
 }
+
+export interface inputData {
+  user_name: string;
+  password: string;
+  email: string;
+}

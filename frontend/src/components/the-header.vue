@@ -13,7 +13,7 @@
         />
         <p class="text-brandBlue-100 text-2xl">Sam's blog</p>
       </button>
-      <div class="ml-auto">
+      <div class="ml-auto flex">
         <base-btn
           :label="`Marketing Note(${articleCounter('marketing')})`"
           btn-style="flat"
@@ -50,9 +50,10 @@
           btn-color="blue"
           class="text-brandBlue-100"
         />
+        <google-login v-if="!hasLogIn" />
 
         <base-btn
-          v-if="hasLogIn"
+          v-if="hasLogIn && accountRole === 'admin'"
           :to="{ name: RouteName.ADMIN }"
           label="Admin Page"
           btn-style="unelevated"
@@ -60,6 +61,7 @@
         />
         <base-btn
           v-if="hasLogIn"
+          class="ml-[1rem]"
           :to="{ name: RouteName.ADMIN }"
           label="Log out"
           btn-style="unelevated"
@@ -85,12 +87,14 @@ import router, { RouteName } from '../router/router';
 import { useAsyncState } from '@vueuse/core';
 import { Article } from '../types/article.type';
 import { getLocalStageData, removeLocalStageData } from '../common/utils';
+import googleLogin from '../components/google-login.vue';
 
 const articleStore = useArticleStore();
 
 const articleData = ref<Article[]>([]);
 
 const hasLogIn = ref(getLocalStageData('isLogIn'));
+const accountRole = ref(getLocalStageData('role'));
 
 watch(
   () => getLocalStageData('isLogIn'),

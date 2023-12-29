@@ -9,8 +9,25 @@
       </div>
     </div>
     <div class="flex flex-col gap-[1rem] md:w-[440px]">
-      <p class="text-3xl font-bold text-gry-900 text-center">Log In</p>
+      <p class="text-3xl font-bold text-gry-900 text-center">Sign up</p>
       <div class="p-[1.25rem] grid gap-[1.25rem]">
+        <div class="grid gap-[0.625rem]">
+          <p>Name</p>
+          <div class="grid gap-[0.625rem]">
+            <base-input
+              v-model="nameInput"
+              :type="'text'"
+              class="w-full"
+              @keyup.enter="submitSignup"
+            />
+            <span
+              v-if="hasClickSubmitBtn && nameInput.trim() === ''"
+              class="p3 text-red-500"
+              >This field is required.</span
+            >
+          </div>
+        </div>
+
         <div class="grid gap-[0.625rem]">
           <p>Email</p>
           <div class="grid gap-[0.625rem]">
@@ -18,7 +35,7 @@
               v-model="emailInput"
               :type="'text'"
               class="w-full"
-              @keyup.enter="submitLogin"
+              @keyup.enter="submitSignup"
             />
             <span
               v-if="hasClickSubmitBtn && emailInput.trim() === ''"
@@ -34,40 +51,50 @@
               v-model="passwordInput"
               :type="'password'"
               class="w-full"
-              @keyup.enter="submitLogin"
+              @keyup.enter="submitSignup"
             />
             <span
-              v-if="hasClickSubmitBtn && emailInput.trim() === ''"
+              v-if="hasClickSubmitBtn && passwordInput.trim() === ''"
+              class="p3 text-red-500"
+              >This field is required.</span
+            >
+          </div>
+        </div>
+
+        <div class="grid gap-[0.625rem]">
+          <p>Confirm password</p>
+          <div class="grid gap-[0.625rem]">
+            <base-input
+              v-model="confirmPasswordInput"
+              :type="'password'"
+              class="w-full"
+              @keyup.enter="submitSignup"
+            />
+            <span
+              v-if="hasClickSubmitBtn && confirmPasswordInput.trim() === ''"
               class="p3 text-red-500"
               >This field is required.</span
             >
             <span
-              v-else-if="hasClickSubmitBtn && !isCorrectAccount"
+              v-else-if="
+                hasClickSubmitBtn && passwordInput !== confirmPasswordInput
+              "
               class="p3 text-red-500"
-              >Invalid email or password. Please double-check or sign up.</span
+              >The password confirmation is incorrect.</span
             >
           </div>
         </div>
 
         <!-- submit button -->
         <baseBtn
-          label="Log In"
+          label="Submit"
           btn-style="unelevated"
           btn-color="blue"
           type="button"
           :disabled="loading"
-          @click="submitLogin"
+          @click="submitSignup"
         >
         </baseBtn>
-        <div class="flex gap-[1rem]">
-          <p>If haven't account</p>
-          <p
-            class="font-bold cursor-pointer"
-            @click="goToSignUpPage"
-          >
-            sign up
-          </p>
-        </div>
       </div>
     </div>
   </q-page>
@@ -88,14 +115,15 @@ import { setLocalStageData, getLocalStageData } from '../common/utils';
 import baseInput from '../components/base-input.vue';
 import baseBtn from '../components/base-btn.vue';
 import loadingPage from '../components/loading-page.vue';
-import { RouterLink } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
 const accountStore = useAccountStore();
 
+const nameInput = ref<string>('');
 const emailInput = ref<string>('');
 const passwordInput = ref<string>('');
+const confirmPasswordInput = ref<string>('');
 
 const hasClickSubmitBtn = ref<boolean>(false);
 
@@ -105,46 +133,22 @@ const isCorrectAccount = ref<boolean>(false);
 
 const loading = ref<boolean>(false);
 
-const submitLogin = () => {
+const submitSignup = async () => {
   hasClickSubmitBtn.value = true;
   loading.value = true;
   emptyInputCheck();
-  if (!isInputEmpty.value) {
-    const { isLoading, execute } = useAsyncState(
-      async () => (await accountStore.getAccount(emailInput.value)).data,
-      [],
-      {
-        resetOnExecute: false,
-        onSuccess: (accountInfo) => {
-          console.log('accountInfo::::', accountInfo);
-          if (Object.keys(accountInfo).length === 0) {
-            alert('Account is not exist.');
-          } else {
-            const inputData = {
-              email: emailInput.value,
-              password: passwordInput.value,
-            };
 
-            const comparisonData = {
-              email: accountInfo['email'],
-              password: accountInfo['password'],
-            };
+  const accountDate = await accountStore.getAccount(emailInput.value);
 
-            const isPairAccount = accountStore.pairAccount(
-              inputData,
-              comparisonData
-            );
-
-            if (isPairAccount) {
-              isCorrectAccount.value = true;
-              setLocalStageData('isLogIn', 'true');
-              setLocalStageData('role', accountInfo['role']);
-              window.location.reload();
-            }
-          }
-        },
-      }
-    );
+  if (!isInputEmpty.value && Object.keys(accountDate.data).length === 0) {
+    const accountData = {
+      user_name: nameInput.value,
+      password: passwordInput.value,
+      email: emailInput.value,
+    };
+    await accountStore.createAccount(accountData);
+    setLocalStageData('isLogIn', 'true');
+    window.location.reload();
   } else {
     loading.value = false;
   }
@@ -153,6 +157,7 @@ const submitLogin = () => {
 const emptyInputCheck = () => {
   if (
     hasClickSubmitBtn.value &&
+    nameInput.value.trim() === '' &&
     emailInput.value.trim() === '' &&
     passwordInput.value.trim() === ''
   ) {
@@ -160,10 +165,6 @@ const emptyInputCheck = () => {
   } else {
     isInputEmpty.value = false;
   }
-};
-
-const goToSignUpPage = () => {
-  router.push({ name: RouteName.SIGNUP });
 };
 </script>
 <style>
