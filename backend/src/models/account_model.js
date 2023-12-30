@@ -4,8 +4,9 @@ const collectionName = 'accounts';
 const createAccount = async (data) => {
     const now = new Date();
     return await db.insertOne(collectionName, {
-        user_name: data.user_name,
-        password: data.password,
+        user_name: data.user_name || data.given_name,
+        password: data.password || null,
+        google_token: data.google_token || null,
         email: data.email,
         role: 'user',
         created_at: now,

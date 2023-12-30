@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const { LeaveAPIError } = require('../configs/error.js');
 const logger = require('../utils/logger.js');
 const { accountDB } = require('../models/model.js');
+const { parseJwt } = require('../utils/util.js');
 
 const getAccountList = async (req, res, next) => {
     let result = {
@@ -82,6 +83,55 @@ const createAccount = async (req, res, next) => {
     res.json(result);
 };
 
+const authenticateGoogleAccount = async (req, res, next) => {
+    let result = {
+        message: 'Success',
+        data: {},
+    };
+
+    let statusCode = StatusCodes.OK;
+    try {
+        const data = req.body;
+        const decodeData = parseJwt(data);
+        const googleAccountData = {
+            user_name: decodeData.name,
+            google_token: decodeData.sub,
+            email: decodeData.email,
+        };
+
+        const userData = await accountDB.getAccount({
+            email: decodeData.email,
+        });
+        if (Object.keys(userData).length === 0) {
+            await accountDB.createAccount(googleAccountData);
+            result.data = googleAccountData;
+        } else {
+            await accountDB.updateAccount(
+                { email: googleAccountData.email },
+                {
+                    google_token: googleAccountData.google_token,
+                }
+            );
+            result.data = googleAccountData;
+        }
+    } catch (error) {
+        if (error instanceof LeaveAPIError) {
+            statusCode = StatusCodes.BAD_REQUEST;
+            result.message = error.message;
+
+            res.status(statusCode);
+            res.json(result);
+        } else {
+            next(error);
+        }
+
+        return;
+    }
+
+    res.status(statusCode);
+    res.json(result);
+};
+
 const updateAccount = async (req, res, next) => {
     let result = {
         message: 'Success',
@@ -91,8 +141,6 @@ const updateAccount = async (req, res, next) => {
     try {
         const email = req.query.email;
         const data = req.body;
-        console.log('email:::::', email);
-        console.log('data::::', data);
 
         const query = { email: email };
         const updateResult = await accountDB.updateAccount(query, data);
@@ -126,5 +174,6 @@ const updateAccount = async (req, res, next) => {
 module.exports = {
     getAccountList,
     createAccount,
+    authenticateGoogleAccount,
     updateAccount,
 };

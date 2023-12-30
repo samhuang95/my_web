@@ -31,8 +31,9 @@ const isConnected = async () => {
 
 const transferIDtoObj = (query) => {
     // transfer _id key to object for mongodb
-    if ('_id' in query && typeof query._id === 'string')
+    if ('_id' in query && typeof query._id === 'string') {
         query._id = new ObjectId(query._id);
+    }
 };
 
 const LongFromNumber = (value) => {
