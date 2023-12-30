@@ -32,18 +32,31 @@ export const useAccountStore = defineStore('account', () => {
     } else {
       return false;
     }
-    //
   };
 
-  const googleSignUp = (credentials: string) => {
-    // Add Google account login credentials
-    console.log(credentials);
+  // const pairGoogleAccount = (inputData: object, comparisonData: object) => {
+  //   if (
+  //     inputData['email'] === comparisonData['email'] &&
+  //     inputData['sub'] === comparisonData['sub']
+  //   ) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
+
+  const authenticateWithGoogleToken = (credentials: string) => {
+    return request<RequestData<string>>({
+      method: 'post',
+      url: `/google_account`,
+      data: credentials as unknown as undefined,
+    });
   };
 
   return {
     getAccount,
     createAccount,
     pairAccount,
-    googleSignUp,
+    authenticateWithGoogleToken,
   };
 });

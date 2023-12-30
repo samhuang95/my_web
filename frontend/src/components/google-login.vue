@@ -21,8 +21,14 @@
 >
 import { ref, onMounted } from 'vue';
 import { useAccountStore } from '../stores/account.store';
-const accountStore = useAccountStore();
+import { setLocalStageData } from '../common/utils';
+import { useAsyncState } from '@vueuse/core';
 
+const emailInput = ref<string>('');
+const googlToken = ref<string>('');
+const isCorrectAccount = ref<boolean>(false);
+
+const accountStore = useAccountStore();
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 function loadGoogleSignInScript() {
@@ -33,28 +39,53 @@ function loadGoogleSignInScript() {
   document.head.appendChild(script);
 }
 
-const parseJwt = (credential: string) => {
-  const base64Url = credential.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split('')
-      .map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join('')
+// Make sure the function can visit on global.
+window.handleCredentialResponse = async function (response: {
+  credential: string;
+}) {
+  const googleAuthenticateData = await accountStore.authenticateWithGoogleToken(
+    response.credential
   );
 
-  return JSON.parse(jsonPayload);
-};
+  const { isLoading, execute } = useAsyncState(
+    async () =>
+      (await accountStore.getAccount(googleAuthenticateData.data['email']))
+        .data,
+    [],
+    {
+      resetOnExecute: false,
+      onSuccess: (accountInfo) => {
+        if (Object.keys(accountInfo).length === 0) {
+          alert('Account is not exist.');
+        } else {
+          const inputData = {
+            email: googleAuthenticateData.data['email'],
+            googlToken: googleAuthenticateData.data['google_token'],
+          };
 
-// 確保此函數在全域範圍內可訪問
-window.handleCredentialResponse = function (response: { credential: string }) {
-  const decoded = parseJwt(response.credential);
-  console.log('Decoded::::', decoded);
-  // const credential = response.credential;
-  // accountStore.googleSignUp(credential);
-  // 處理身份驗證回應
+          const comparisonData = {
+            email: accountInfo['email'],
+            googlToken: accountInfo['google_token'],
+          };
+
+          console.log(inputData)
+          console.log(comparisonData)
+
+          const isPairAccount = accountStore.pairAccount(
+            inputData,
+            comparisonData
+          );
+
+          if (isPairAccount) {
+            isCorrectAccount.value = true;
+            setLocalStageData('isLogIn', 'true');
+            setLocalStageData('role', accountInfo['role']);
+            window.location.reload();
+          }
+        }
+      },
+    }
+  );
 };
 
 onMounted(() => {

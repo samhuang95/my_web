@@ -90,6 +90,7 @@ const routes: Array<RouteRecordRaw> = [
         beforeEnter: (to, from, next) => {
           // Check the role is admin or not
           const userRole = getLocalStageData('role');
+          console.log("userRole:::", userRole)
           if (userRole === 'admin') {
             // if user role is admin, approve to admin page
             next();
