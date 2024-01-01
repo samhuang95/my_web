@@ -129,14 +129,14 @@ const { isLoading, execute } = useAsyncState(
 
 const handleChangeToPublish = async (article_id: string) => {
   const now = new Date();
-  const updateData = { state: 'published', updated_at: now.toISOString() };
+  const updateData = { state: 'published' };
   await articleStore.updateArticle(article_id, updateData);
   window.location.reload();
 };
 
 const handleChangeToDraft = async (article_id: string) => {
   const now = new Date();
-  const updateData = { state: 'draft', updated_at: now.toISOString() };
+  const updateData = { state: 'draft' };
   await articleStore.updateArticle(article_id, updateData);
   window.location.reload();
 };

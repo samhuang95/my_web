@@ -30,5 +30,4 @@ export interface updateArticleType {
   cover_url?: string;
   summary?: string;
   content?: string;
-  updated_at?: string;
 }

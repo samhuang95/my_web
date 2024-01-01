@@ -102,6 +102,7 @@ const updateArticle = async (req, res, next) => {
         const data = req.body;
         const query = { article_id: articleID };
 
+        data['updated_at'] = new Date();
         const updateResult = await articleDB.updateArticle(query, data);
 
         if (updateResult !== 'success') {
