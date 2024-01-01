@@ -14,7 +14,7 @@ const insertArticle = async (data) => {
         title: data.title,
         eng_title: data.eng_title,
         article_tag: data.article_tag,
-        statue: data.statue,
+        state: data.state,
         cover_url: data.cover_url,
         summary: data.summary,
         content: data.content,

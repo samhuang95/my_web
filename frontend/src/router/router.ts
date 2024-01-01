@@ -9,9 +9,7 @@ declare module 'vue-router' {
 
 export enum RouteName {
   HOME = 'home',
-
   HOME_FILTER = 'home-filter',
-  ARTICLE_CREATE = 'article-create',
   ARTICLE = 'the-article',
   ADMIN = 'the-admin',
   LOGIN = 'the-login',
@@ -51,12 +49,6 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   {
-    path: `/article-create`,
-    name: RouteName.ARTICLE_CREATE,
-    component: () => import('../views/the-article-create.vue'),
-  },
-
-  {
     path: `/login`,
     name: RouteName.LOGIN,
     component: () => import('../views/the-login.vue'),
@@ -90,7 +82,7 @@ const routes: Array<RouteRecordRaw> = [
         beforeEnter: (to, from, next) => {
           // Check the role is admin or not
           const userRole = getLocalStageData('role');
-          console.log("userRole:::", userRole)
+
           if (userRole === 'admin') {
             // if user role is admin, approve to admin page
             next();

@@ -2,7 +2,11 @@ import exp from 'constants';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { request } from '../common/api';
-import { Article } from '../types/article.type';
+import {
+  Article,
+  createArticleType,
+  updateArticleType,
+} from '../types/article.type';
 
 export interface RequestData<T> {
   message: string;
@@ -13,7 +17,7 @@ export const useArticleStore = defineStore('article', () => {
   async function getPublishedArticleList() {
     return request<RequestData<Article[]>, Article>({
       method: 'get',
-      url: `/article-list?statue=published`,
+      url: `/article-list?state=published`,
     });
   }
   async function getArticleList() {
@@ -30,10 +34,30 @@ export const useArticleStore = defineStore('article', () => {
     });
   }
 
+  async function createArticle(inputData: createArticleType) {
+    return request<RequestData<createArticleType>, createArticleType>({
+      method: 'post',
+      url: '/article',
+      data: inputData,
+    });
+  }
+
+  async function updateArticle(
+    article_id: string,
+    updateData: updateArticleType
+  ) {
+    return request<RequestData<updateArticleType>, updateArticleType>({
+      method: 'patch',
+      url: `/article?article_id=${article_id}`,
+      data: updateData,
+    });
+  }
+
   return {
     getPublishedArticleList,
     getArticleList,
     getArticle,
-    
+    createArticle,
+    updateArticle,
   };
 });

@@ -20,20 +20,22 @@
           style="width: 38.5%"
         >
           <div class="flex justify-end">
-            <div v-if="props.row.statue !== 'published'">
+            <div v-if="props.row.state !== 'published'">
               <base-btn
                 label="Publish"
                 btn-style="flat"
                 btn-size="sm"
                 :icon="`img:${fileArrowUp}`"
+                @click="handleChangeToPublish(props.row.article_id)"
               />
             </div>
             <div v-else>
               <base-btn
-                label="Withdraw"
+                label="To draft"
                 btn-style="flat"
                 btn-size="sm"
                 :icon="`img:${closeWindowIcon}`"
+                @click="handleChangeToDraft(props.row.article_id)"
               />
             </div>
             <div>
@@ -56,6 +58,7 @@
         </q-td>
       </template>
     </q-table>
+    <q-page></q-page>
   </div>
 </template>
 
@@ -90,10 +93,10 @@ const tableColumns = [
     field: 'article_tag',
   },
   {
-    name: 'statue',
+    name: 'state',
     align: 'left',
-    label: 'Statue',
-    field: 'statue',
+    label: 'State',
+    field: 'state',
     sortable: true,
   },
   {
@@ -124,9 +127,23 @@ const { isLoading, execute } = useAsyncState(
   }
 );
 
+const handleChangeToPublish = async (article_id: string) => {
+  const now = new Date();
+  const updateData = { state: 'published', updated_at: now.toISOString() };
+  await articleStore.updateArticle(article_id, updateData);
+  window.location.reload();
+};
+
+const handleChangeToDraft = async (article_id: string) => {
+  const now = new Date();
+  const updateData = { state: 'draft', updated_at: now.toISOString() };
+  await articleStore.updateArticle(article_id, updateData);
+  window.location.reload();
+};
+
 const goToEditor = () => {
-  // 
-}
+  //
+};
 </script>
 
 <style

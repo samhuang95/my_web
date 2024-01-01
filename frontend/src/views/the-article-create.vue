@@ -6,7 +6,7 @@
           <H4 class="h4">Title</H4>
           <H4 class="h4">English title</H4>
           <H4 class="h4">Article tag</H4>
-          <H4 class="h4">Statue</H4>
+          <H4 class="h4">State</H4>
           <H4 class="h4">Cover image URL</H4>
           <H4 class="h4">Summary</H4>
         </div>
@@ -27,7 +27,7 @@
             placeholder="Please enter 'tech' or 'marketing'"
           />
           <base-input
-            v-model="statueInput"
+            v-model="stateInput"
             :type="'text'"
             placeholder="Please enter 'published' or 'draft'"
           />
@@ -55,6 +55,7 @@
       label="Submit"
       btn-style="unelevated"
       btn-color="blue"
+      @click="handleSubmit"
     />
   </div>
 </template>
@@ -63,7 +64,8 @@
   setup
   lang="ts"
 >
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
+
 import { QuillEditor } from '@vueup/vue-quill';
 
 import baseBtn from '../components/base-btn.vue';
@@ -72,28 +74,25 @@ import baseInput from '../components/base-input.vue';
 import { uploadToS3 } from '../common/aws';
 import { useQuasar, QSpinnerGears } from 'quasar';
 import { watch } from 'fs';
-
+import { useArticleStore } from '../stores/article.store';
+import { createArticleType } from '../types/article.type';
+import { useAdminStore } from '../stores/admin.store';
 const $q = useQuasar();
+const articleStore = useArticleStore();
+const adminStore = useAdminStore();
 
 const hasClickSubmitBtn = ref<boolean>(false);
 
 const rtfEditor = ref<QuillEditor | null>(null);
 
-watchEffect(() => {
-  console.log('rtfEditor:::', rtfEditor.value);
-  console.log('rtfEditor:::', rtfEditor.value);
-});
-
 const isLoading = ref<boolean>(false);
 const titleInput = ref<string>('');
 const englishTitleInput = ref<string>('');
 const articleTagInput = ref<string>('');
-const statueInput = ref<string>('');
+const stateInput = ref<string>('');
 const coverUrlInput = ref<string>('');
 const summaryInput = ref<string>('');
 const contentInput = ref<string>('');
-
-const isInputEmpty = ref<boolean>(false);
 
 /**
  * parse data URI into Blob
@@ -160,6 +159,7 @@ const getContent = async () => {
 
   // navigator.clipboard.writeText(content);
   const textArea = document.createElement('textarea');
+
   textArea.value = content;
 
   // Move textarea out of the viewport so it's not visible
@@ -167,41 +167,75 @@ const getContent = async () => {
   textArea.style.left = '-999999px';
 
   document.body.prepend(textArea);
-  textArea.select();
 
-  try {
-    document.execCommand('copy');
-    $q.notify({
-      spinner: QSpinnerGears,
-      message: 'Copying...',
-      timeout: 100,
-      color: 'teal-7',
-    });
-  } catch (error) {
-    console.error(error);
-  } finally {
-    textArea.remove();
-  }
+  contentInput.value = textArea.value;
+
   isLoading.value = false;
 };
 
-const emptyInputCheck = () => {
+const clear = () => {
+  rtfEditor.value?.setHTML('');
+};
+
+const isInputEmptyCheck = (inputData: createArticleType) => {
   if (
     hasClickSubmitBtn.value &&
-    titleInput.value.trim() === '' &&
-    englishTitleInput.value.trim() === '' &&
-    articleTagInput.value.trim() === '' &&
-    statueInput.value.trim() === '' &&
-    coverUrlInput.value.trim() === '' &&
-    summaryInput.value.trim() === ''
+    (inputData.title.trim() === '' ||
+      inputData.eng_title.trim() === '' ||
+      inputData.article_tag.trim() === '' ||
+      inputData.state.trim() === '' ||
+      inputData.cover_url.trim() === '' ||
+      inputData.summary.trim() === '' ||
+      inputData.content.trim() === '<p><br></p>')
   ) {
-    isInputEmpty.value = true;
+    return true;
   } else {
-    isInputEmpty.value = false;
+    return false;
   }
 };
 
 const handleSubmit = async () => {
-  //
+  hasClickSubmitBtn.value = true;
+  await getContent();
+
+  const inputData = {
+    title: titleInput.value,
+    eng_title: englishTitleInput.value,
+    article_tag: articleTagInput.value,
+    state: stateInput.value,
+    cover_url: coverUrlInput.value,
+    summary: summaryInput.value,
+    content: contentInput.value,
+  };
+  const isInputEmpty = isInputEmptyCheck(inputData);
+  /**
+   * Check if the input is empty.
+   */
+  if (isInputEmpty) {
+    alert('Please fulfill all input form submission');
+  } else {
+    await articleStore.createArticle(inputData);
+    const confirmation = window.confirm(
+      'Article created successfully. Would you like to submit another article?'
+    );
+
+    if (confirmation) {
+      // Clear input fields
+      titleInput.value = '';
+      englishTitleInput.value = '';
+      articleTagInput.value = '';
+      stateInput.value = '';
+      coverUrlInput.value = '';
+      summaryInput.value = '';
+      contentInput.value = '';
+      clear();
+    } else {
+      // Navigate or perform other actions
+      adminStore.isOpenManagement = true;
+      adminStore.isOpenCreatePage = false;
+      adminStore.isOpenEditPage = false;
+      adminStore.isOpenPreviewPage = false;
+    }
+  }
 };
 </script>

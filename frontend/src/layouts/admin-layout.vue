@@ -29,12 +29,6 @@
       </q-toolbar>
     </q-header>
 
-    <q-footer>
-      <q-toolbar>
-        <q-toolbar-title>Footer</q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
-
     <q-drawer
       v-model="drawerLeft"
       :width="200"
@@ -66,8 +60,8 @@
     <q-page-container>
       <q-page>
         <the-admin
-          :is-open-management="isOpenManagement"
-          :is-open-create-page="isOpenCreatePage"
+          :is-open-management="adminStore.isOpenManagement"
+          :is-open-create-page="adminStore.isOpenCreatePage"
         />
       </q-page>
     </q-page-container>
@@ -84,18 +78,22 @@ import BaseBtn from '../components/base-btn.vue';
 import theAdmin from '../views/the-admin.vue';
 import serverSolid from '../assets/icon/server-solid.svg';
 import fileArrowUpBlack from '../assets/icon/file-arrow-up-black.svg';
+import { useAdminStore } from '../stores/admin.store';
 
-const isOpenManagement = ref<boolean>(true);
-const isOpenCreatePage = ref<boolean>(false);
+const adminStore = useAdminStore();
 
 const handleCreateArticle = () => {
-  isOpenCreatePage.value = true;
-  isOpenManagement.value = false;
+  adminStore.isOpenCreatePage = true;
+  adminStore.isOpenManagement = false;
+  adminStore.isOpenEditPage = false;
+  adminStore.isOpenPreviewPage = false;
 };
 
 const handleOpenManagement = () => {
-  isOpenManagement.value = true;
-  isOpenCreatePage.value = false;
+  adminStore.isOpenManagement = true;
+  adminStore.isOpenCreatePage = false;
+  adminStore.isOpenEditPage = false;
+  adminStore.isOpenPreviewPage = false;
 };
 
 const drawerLeft = ref<boolean>(true);

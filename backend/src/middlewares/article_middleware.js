@@ -15,7 +15,7 @@ const createArticle = async (req, res, next) => {
             title: req.body.title,
             eng_title: req.body.eng_title,
             article_tag: req.body.article_tag,
-            statue: req.body.statue,
+            state: req.body.state,
             cover_url: req.body.cover_url,
             summary: req.body.summary,
             content: req.body.content,
@@ -24,7 +24,7 @@ const createArticle = async (req, res, next) => {
 
         if (util.hasUndefinedData(checkData)) {
             throw new LeaveAPIError(
-                'please send title, eng_title, article_tag, statue, cover_url, summary and content.'
+                'please send title, eng_title, article_tag, state, cover_url, summary and content.'
             );
         }
     } catch (error) {

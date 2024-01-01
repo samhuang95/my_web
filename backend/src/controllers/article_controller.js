@@ -14,7 +14,7 @@ const getArticleList = async (req, res, next) => {
     let statusCode = StatusCodes.OK;
     try {
         const articleID = req.query.article_id;
-        const statue = req.query.statue;
+        const state = req.query.state;
         const title = req.query.title;
         const articleTag = req.query.article_tag;
         const skip = parseInt(req.query.skip);
@@ -23,7 +23,7 @@ const getArticleList = async (req, res, next) => {
         let query = {};
 
         if (articleID !== undefined) query.article_id = articleID;
-        if (statue !== undefined) query.statue = statue;
+        if (state !== undefined) query.state = state;
         if (title !== undefined) query.title = title;
         if (articleTag !== undefined) query.article_tag = articleTag;
 
