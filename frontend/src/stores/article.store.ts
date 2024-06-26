@@ -28,9 +28,9 @@ export const useArticleStore = defineStore('article', () => {
   }
 
   async function getArticle(article_id: string) {
-    return request<RequestData<Article[]>, Article>({
+    return request<RequestData<Article>, Article>({
       method: 'get',
-      url: `/article?article_id=${article_id}`,
+      url: `/article-list?article_id=${article_id}`,
     });
   }
 

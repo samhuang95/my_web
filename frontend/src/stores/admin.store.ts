@@ -9,10 +9,13 @@ export const useAdminStore = defineStore('admin', () => {
   const isOpenEditPage = ref<boolean>(false);
   const isOpenPreviewPage = ref<boolean>(false);
 
+  const selectedArticleID = ref<string>('');
+
   return {
     isOpenCreatePage,
     isOpenManagement,
     isOpenEditPage,
     isOpenPreviewPage,
+    selectedArticleID,
   };
 });

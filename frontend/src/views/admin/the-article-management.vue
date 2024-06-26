@@ -9,7 +9,7 @@
     >
       <template #no-data>
         <div class="flex gap-[0.375rem] m-auto">
-          <img src="../assets/icon/warning-icon.svg" />
+          <img src="../../assets/icon/warning-icon.svg" />
           <p>No Data</p>
         </div>
       </template>
@@ -52,6 +52,7 @@
                 btn-style="flat"
                 btn-size="sm"
                 :icon="`img:${editorIcon}`"
+                @click="goToEditor(props.row.article_id)"
               />
             </div>
           </div>
@@ -68,16 +69,18 @@
 >
 import { computed, ref } from 'vue';
 
-import { useArticleStore } from '../stores/article.store';
+import { useArticleStore } from '../../stores/article.store';
+import { useAdminStore } from '../../stores/admin.store';
 
-import baseBtn from '../components/base-btn.vue';
-import closeWindowIcon from '../assets/icon/close-window-icon.svg';
-import fileArrowUp from '../assets/icon/file-arrow-up.svg';
-import eyeIcon from '../assets/icon/eye-icon.svg';
-import editorIcon from '../assets/icon/editor-icon.svg';
+import baseBtn from '../../components/base-btn.vue';
+import closeWindowIcon from '../../assets/icon/close-window-icon.svg';
+import fileArrowUp from '../../assets/icon/file-arrow-up.svg';
+import eyeIcon from '../../assets/icon/eye-icon.svg';
+import editorIcon from '../../assets/icon/editor-icon.svg';
 import { useAsyncState } from '@vueuse/core';
 
 const articleStore = useArticleStore();
+const adminStore = useAdminStore();
 
 const tableColumns = [
   {
@@ -141,8 +144,12 @@ const handleChangeToDraft = async (article_id: string) => {
   window.location.reload();
 };
 
-const goToEditor = () => {
-  //
+const goToEditor = (articleId: string) => {
+  adminStore.selectedArticleID = articleId;
+  adminStore.isOpenManagement = false;
+  adminStore.isOpenCreatePage = false;
+  adminStore.isOpenEditPage = true;
+  adminStore.isOpenPreviewPage = false;
 };
 </script>
 

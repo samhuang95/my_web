@@ -1,5 +1,14 @@
 <template>
   <div class="flex flex-col gap-2 p-10">
+    <div>
+      <p
+        class="cursor-pointer font-extrabold text-left text-brandBlue-50"
+        @click="goToManagement"
+      >
+        &lt;- Back to management
+      </p>
+    </div>
+
     <div class="grid gap-[1rem]">
       <div class="flex gap-[1rem] items-center">
         <div class="grid gap-[1.5rem]">
@@ -52,7 +61,7 @@
       />
     </div>
     <baseBtn
-      label="Submit"
+      label="Update"
       btn-style="unelevated"
       btn-color="blue"
       @click="handleSubmit"
@@ -65,27 +74,26 @@
   lang="ts"
 >
 import { ref } from 'vue';
-
+import { useQuasar } from 'quasar';
 import { QuillEditor } from '@vueup/vue-quill';
 
-import baseBtn from '../components/base-btn.vue';
-import baseInput from '../components/base-input.vue';
+import baseBtn from '../../components/base-btn.vue';
+import baseInput from '../../components/base-input.vue';
 
-import { uploadToS3 } from '../common/aws';
-import { useQuasar, QSpinnerGears } from 'quasar';
-import { watch } from 'fs';
-import { useArticleStore } from '../stores/article.store';
-import { createArticleType } from '../types/article.type';
-import { useAdminStore } from '../stores/admin.store';
+import { useArticleStore } from '../../stores/article.store';
+import { useAdminStore } from '../../stores/admin.store';
+import { useAsyncState } from '@vueuse/core';
+import { uploadToS3 } from '../../common/aws';
+
 const $q = useQuasar();
 const articleStore = useArticleStore();
 const adminStore = useAdminStore();
 
 const hasClickSubmitBtn = ref<boolean>(false);
+const isLoading = ref<boolean>(false);
 
 const rtfEditor = ref<QuillEditor | null>(null);
 
-const isLoading = ref<boolean>(false);
 const titleInput = ref<string>('');
 const englishTitleInput = ref<string>('');
 const articleTagInput = ref<string>('');
@@ -94,6 +102,53 @@ const coverUrlInput = ref<string>('');
 const summaryInput = ref<string>('');
 const contentInput = ref<string>('');
 
+const goToManagement = () => {
+  adminStore.isOpenManagement = true;
+  adminStore.isOpenCreatePage = false;
+  adminStore.isOpenEditPage = false;
+  adminStore.isOpenPreviewPage = false;
+};
+
+const selectedArticleID = adminStore.selectedArticleID;
+
+if (selectedArticleID !== undefined) {
+  const { isLoading, execute } = useAsyncState(
+    async () =>
+      (await articleStore.getArticle(selectedArticleID as string)).data,
+    {
+      _id: '',
+      article_id: '',
+      title: '',
+      eng_title: '',
+      article_tag: '',
+      state: '',
+      cover_url: '',
+      summary: '',
+      content: '',
+      created_at: '',
+      updated_at: '',
+    },
+    {
+      resetOnExecute: false,
+      onSuccess: async (articleData) => {
+        /**
+         * Show the article data on the page.
+         */
+        titleInput.value = articleData.title as string;
+        englishTitleInput.value = articleData.eng_title as string;
+        articleTagInput.value = articleData.article_tag as string;
+        stateInput.value = articleData.state as string;
+        coverUrlInput.value = articleData.cover_url as string;
+        summaryInput.value = articleData.summary as string;
+        rtfEditor.value?.setHTML(articleData.content);
+      },
+    }
+  );
+} else {
+  alert('This is not a valid article');
+}
+
+// ================================
 /**
  * parse data URI into Blob
  * this function is generate by GPT
@@ -138,6 +193,7 @@ const processAndUploadImages = async (content: string) => {
 
     const dataUri = tag.match(dataUriRegex)[1];
     const fileType = dataUri.match(fileTypeRegex)[1];
+    console.log('BBBB::::', dataUri.match(fileTypeRegex));
     const fileName = `${new Date().getTime().toString()}.${
       fileType.split('/')[1]
     }`;
@@ -173,69 +229,29 @@ const getContent = async () => {
   isLoading.value = false;
 };
 
-const clear = () => {
-  rtfEditor.value?.setHTML('');
-};
-
-const isInputEmptyCheck = (inputData: createArticleType) => {
-  if (
-    hasClickSubmitBtn.value &&
-    (inputData.title.trim() === '' ||
-      inputData.eng_title.trim() === '' ||
-      inputData.article_tag.trim() === '' ||
-      inputData.state.trim() === '' ||
-      inputData.cover_url.trim() === '' ||
-      inputData.summary.trim() === '' ||
-      inputData.content.trim() === '<p><br></p>')
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 const handleSubmit = async () => {
   hasClickSubmitBtn.value = true;
   await getContent();
 
-  const inputData = {
-    title: titleInput.value,
-    eng_title: englishTitleInput.value,
-    article_tag: articleTagInput.value,
-    state: stateInput.value,
-    cover_url: coverUrlInput.value,
-    summary: summaryInput.value,
-    content: contentInput.value,
-  };
-  const isInputEmpty = isInputEmptyCheck(inputData);
   /**
-   * Check if the input is empty.
+   * Call API to update articles.
    */
-  if (isInputEmpty) {
-    alert('Please fulfill all input form submission');
-  } else {
-    await articleStore.createArticle(inputData);
-    const confirmation = window.confirm(
-      'Article created successfully. Would you like to submit another article?'
-    );
+  try {
+    const updateData = {
+      title: titleInput.value,
+      eng_title: englishTitleInput.value,
+      article_tag: articleTagInput.value,
+      state: stateInput.value,
+      cover_url: coverUrlInput.value,
+      summary: summaryInput.value,
+      content: contentInput.value,
+    };
 
-    if (confirmation) {
-      // Clear input fields
-      titleInput.value = '';
-      englishTitleInput.value = '';
-      articleTagInput.value = '';
-      stateInput.value = '';
-      coverUrlInput.value = '';
-      summaryInput.value = '';
-      contentInput.value = '';
-      clear();
-    } else {
-      // Navigate or perform other actions
-      adminStore.isOpenManagement = true;
-      adminStore.isOpenCreatePage = false;
-      adminStore.isOpenEditPage = false;
-      adminStore.isOpenPreviewPage = false;
-    }
+    console.log('updateData:::', updateData);
+
+    await articleStore.updateArticle(selectedArticleID as string, updateData);
+  } catch (error) {
+    alert('The update process failed: ' + error);
   }
 };
 </script>

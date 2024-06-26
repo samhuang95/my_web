@@ -86,7 +86,7 @@ import { useArticleStore } from '../stores/article.store';
 import router, { RouteName } from '../router/router';
 import { useAsyncState } from '@vueuse/core';
 import { Article } from '../types/article.type';
-import { getLocalStageData, removeLocalStageData } from '../common/utils';
+import { getLocalStageData, removeLocalStageData, clearLocalStageData } from '../common/utils';
 import googleLogin from '../components/google-login.vue';
 
 const articleStore = useArticleStore();
@@ -147,6 +147,7 @@ const handleSelectedArticle = (tagName: string) => {
 
 const logout = () => {
   removeLocalStageData('isLogIn');
+  clearLocalStageData()
   router.push({ name: RouteName.HOME });
   router.go(0);
 };
