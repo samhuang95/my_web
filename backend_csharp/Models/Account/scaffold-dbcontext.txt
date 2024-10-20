@@ -1,0 +1,2 @@
+﻿Scaffold-DbContext "Server=mywebdb.cdgcimua8xgx.ap-northeast-1.rds.amazonaws.com;Database=Account;Uid=admin;Pwd=Dd-99236567" Pomelo.EntityFrameworkCore.MySql -OutputDir Models/Account
+

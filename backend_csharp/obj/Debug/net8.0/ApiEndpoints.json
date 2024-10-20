@@ -1,0 +1,34 @@
+[
+  {
+    "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
+    "Method": "GetUser",
+    "RelativePath": "api/User/GetUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reqMsg",
+        "Type": "backend_csharp.Business.ViewModels.Account.GetUserRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
+    "Method": "InsertUser",
+    "RelativePath": "api/User/InsertUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reqMsg",
+        "Type": "backend_csharp.Business.ViewModels.Account.InsertUserRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
