@@ -109,3 +109,5 @@ C:\Users\user\Dropbox\All_Project\my_web\backend_csharp\obj\Debug\net8.0\refint\
 C:\Users\user\Dropbox\All_Project\my_web\backend_csharp\obj\Debug\net8.0\backend_csharp.pdb
 C:\Users\user\Dropbox\All_Project\my_web\backend_csharp\obj\Debug\net8.0\backend_csharp.genruntimeconfig.cache
 C:\Users\user\Dropbox\All_Project\my_web\backend_csharp\obj\Debug\net8.0\ref\backend_csharp.dll
+C:\Users\user\Dropbox\All_Project\my_web\backend_csharp\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\user\Dropbox\All_Project\my_web\backend_csharp\bin\Debug\net8.0\Sprache.dll

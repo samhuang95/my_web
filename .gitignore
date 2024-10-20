@@ -1,3 +1,5 @@
 frontend/.env
 desktop.ini
 backend_csharp/.vs
+backend_csharp/.env
+backend_csharp/Models/scaffold-dbcontext.txt

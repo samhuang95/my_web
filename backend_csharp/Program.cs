@@ -1,12 +1,26 @@
 using backend_csharp.Models.Account;
 using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// 讀取 .env 檔案
+Env.Load();
+builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var connectionString = builder.Configuration.GetConnectionString("AccountDBConnection");
+// 取得環境變數
+var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
+var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+var connectionString = builder.Configuration.GetConnectionString("AccountDBConnection")
+    .Replace("${DB_SERVER}", dbServer)
+    .Replace("${DB_USER}", dbUser)
+    .Replace("${DB_PASSWORD}", dbPassword);
+
 builder.Services.AddDbContext<AccountContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
