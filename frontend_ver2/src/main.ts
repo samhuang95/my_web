@@ -1,67 +1,14 @@
-import { createApp } from 'vue';
-import router from './router/router';
-import { createPinia } from 'pinia';
-import i18n from './locales/i18n';
-import { QuillEditor } from '@vueup/vue-quill';
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import './assets/main.css'
 
-import {
-  Quasar,
-  Notify,
-  Dialog,
-  Loading,
-  QuasarPluginOptions,
-  useQuasar,
-} from 'quasar';
-import quasarLang from 'quasar/lang/en-US';
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-// Import icon libraries
-import '@quasar/extras/roboto-font/roboto-font.css';
-import '@quasar/extras/material-icons/material-icons.css';
+import App from './App.vue'
+import router from './router'
 
-// Import Quasar css
-import 'quasar/src/css/index.sass';
-import App from './App.vue';
+const app = createApp(App)
 
-// Tailwind CSS
-import './index.css';
+app.use(createPinia())
+app.use(router)
 
-// 自訂樣式
-import './style/animate.sass';
-import './style/global.sass';
-
-Notify.registerType('custom-notify', {
-  textColor: 'white',
-  classes: 'bg-brand-400',
-});
-
-// font awesome settings //
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-
-//---------- 引入所需icon -----------------------//
-import {
-  faCircleCheck,
-  faCoins,
-  faXmark,
-  faArrowUpRightFromSquare,
-} from '@fortawesome/free-solid-svg-icons';
-
-library.add(faCircleCheck, faCoins, faXmark, faArrowUpRightFromSquare);
-//---------- 引入所需icon -----------------------//
-
-createApp(App)
-  .use(Quasar, {
-    plugins: {
-      Notify,
-      Dialog,
-      Loading,
-    },
-    lang: quasarLang,
-  } as QuasarPluginOptions)
-  .use(createPinia())
-  .use(router)
-  .use(i18n)
-  .component('font-awesome-icon', FontAwesomeIcon) // setting font-awesome
-  .component('QuillEditor', QuillEditor)
-  .mount('#app');
+app.mount('#app')
