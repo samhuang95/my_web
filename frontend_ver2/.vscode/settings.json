@@ -1,0 +1,19 @@
+{
+  "html.format.wrapAttributes": "force-expand-multiline",
+  "cSpell.words": [
+    "esbuild",
+    "Htmls",
+    "imagetools",
+    "intlify",
+    "pinia",
+    "pxloader",
+    "ramda",
+    "remeda",
+    "shiki",
+    "tailwindcss",
+    "Unocss",
+    "vueuse"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "prettier.tabWidth": 2
+}
