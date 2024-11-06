@@ -26,6 +26,8 @@ namespace backend_csharp.Business.Account
                     UserLastName = reqMsg.UserLastName,
                     Email = reqMsg.Email,
                     Password = reqMsg.Password,
+                    UserLevelCode = reqMsg.UserLevelCode,
+                    LangRecordCode = reqMsg.LangRecordCode,
                     CreateId = 1, // 假設是 1，根據實際需求調整
                     CreateTime = DateTime.Now
                 };
@@ -40,6 +42,9 @@ namespace backend_csharp.Business.Account
                     UserFirstName = user.UserFirstName,
                     UserLastName = user.UserLastName,
                     Email = user.Email,
+                    UserLevelCode = user.UserLevelCode,
+                    LangRecordCode = user.LangRecordCode,
+
                     CreateTime = user.CreateTime
                 };
 
@@ -82,7 +87,7 @@ namespace backend_csharp.Business.Account
         }
 
 
-        public async Task<User> UpdateUserBI(UpdateUserRequest reqMsg)
+        public async Task<User> UpdateUserInfo(UpdateUserRequest reqMsg)
         {
             try
             {
@@ -119,6 +124,73 @@ namespace backend_csharp.Business.Account
             }
         }
 
+        public async Task<User> UpdateUserLevel(UpdateUserLevelRequest reqMsg)
+        {
+            try
+            {
+                // 從資料庫查找 User，使用者 ID 來查詢
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.UserId == reqMsg.UserId && u.IsDeleted == CommonConstants.NotDeleted);
+
+                // 如果找不到使用者，則返回 null
+                if (user == null)
+                {
+                    return null;
+                }
+
+                // 更新使用者資料
+                user.UserLevelCode = reqMsg.UserLevelCode;
+
+                // 更新 UpdateTime 為當前時間
+                user.UpdateId = reqMsg.UserId;
+                user.UpdateTime = DateTime.Now;
+
+                // 保存更新後的數據到資料庫
+                await _context.SaveChangesAsync();
+
+                // 回傳找到的使用者資料
+                return user;
+            }
+            catch (Exception ex)
+            {
+                // 捕捉例外情況並拋出錯誤，讓控制器層處理
+                throw new Exception("An error occurred while updating the user: " + ex.Message, ex);
+            }
+        }
+
+        public async Task<User> UpdateUserLang(UpdateUserLangRequest reqMsg)
+        {
+            try
+            {
+                // 從資料庫查找 User，使用者 ID 來查詢
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.UserId == reqMsg.UserId && u.IsDeleted == CommonConstants.NotDeleted);
+
+                // 如果找不到使用者，則返回 null
+                if (user == null)
+                {
+                    return null;
+                }
+
+                // 更新使用者資料
+                user.LangRecordCode = reqMsg.LangRecordCode;
+
+                // 更新 UpdateTime 為當前時間
+                user.UpdateId = reqMsg.UserId;
+                user.UpdateTime = DateTime.Now;
+
+                // 保存更新後的數據到資料庫
+                await _context.SaveChangesAsync();
+
+                // 回傳找到的使用者資料
+                return user;
+            }
+            catch (Exception ex)
+            {
+                // 捕捉例外情況並拋出錯誤，讓控制器層處理
+                throw new Exception("An error occurred while updating the user: " + ex.Message, ex);
+            }
+        }
 
         public async Task<User> DeleteUserBI(DeleteUserRequest reqMsg)
         {

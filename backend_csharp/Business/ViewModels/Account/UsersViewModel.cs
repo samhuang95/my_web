@@ -9,6 +9,10 @@ namespace backend_csharp.Business.ViewModels.Account
         public string UserLastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public int UserLevelCode { get; set; }
+        public int LangRecordCode { get; set; }
+
+
     }
     public class InsertUserResponse
     {
@@ -16,6 +20,8 @@ namespace backend_csharp.Business.ViewModels.Account
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
         public string Email { get; set; }
+        public int UserLevelCode { get; set; }
+        public int LangRecordCode { get; set; }
         public DateTime CreateTime { get; set; }
     }
     public class GetUserRequest
@@ -31,6 +37,31 @@ namespace backend_csharp.Business.ViewModels.Account
         public string Email { get; set; }
         public string Password { get; set; }
         public int UpdateId { get; set; }
+
+        public DateTime UpdateTime { get; set; }
+
+    }
+
+    public class UpdateUserLevelRequest
+    {
+        public int UserId { get; set; }
+
+        public int UserLevelCode { get; set; }
+
+        public int UpdateId { get; set; }
+
+        public DateTime UpdateTime { get; set; }
+
+    }
+
+    public class UpdateUserLangRequest
+    {
+        public int UserId { get; set; }
+
+        public int LangRecordCode { get; set; }
+
+        public int UpdateId { get; set; }
+
         public DateTime UpdateTime { get; set; }
 
     }

@@ -15,6 +15,10 @@ public partial class User
 
     public string Password { get; set; } = null!;
 
+    public int UserLevelCode { get; set; }
+
+    public int LangRecordCode { get; set; }
+
     public int IsDeleted { get; set; }
 
     public int CreateId { get; set; }

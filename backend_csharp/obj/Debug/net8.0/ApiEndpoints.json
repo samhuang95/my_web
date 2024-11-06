@@ -1,5 +1,85 @@
 [
   {
+    "ContainingType": "backend_csharp.Controllers.Content.Articles.ArticleController",
+    "Method": "DeleteArticle",
+    "RelativePath": "api/Article/DeleteArticle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reqMsg",
+        "Type": "backend_csharp.Business.ViewModels.Content.DeleteArticleRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend_csharp.Controllers.Content.Articles.ArticleController",
+    "Method": "GetArticle",
+    "RelativePath": "api/Article/GetArticle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reqMsg",
+        "Type": "backend_csharp.Business.ViewModels.Content.GetArticleRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend_csharp.Controllers.Content.Articles.ArticleController",
+    "Method": "GetArticleList",
+    "RelativePath": "api/Article/GetArticleList",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reqMsg",
+        "Type": "backend_csharp.Business.ViewModels.Content.GetArticleListRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend_csharp.Controllers.Content.Articles.ArticleController",
+    "Method": "InsertAricle",
+    "RelativePath": "api/Article/InsertAricle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reqMsg",
+        "Type": "backend_csharp.Business.ViewModels.Content.InsertArticleRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend_csharp.Controllers.Content.Articles.ArticleController",
+    "Method": "UpdateArticle",
+    "RelativePath": "api/Article/UpdateArticle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reqMsg",
+        "Type": "backend_csharp.Business.ViewModels.Content.UpdateArticleRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
     "Method": "DeleteUser",
     "RelativePath": "api/User/DeleteUser",
@@ -49,8 +129,8 @@
   },
   {
     "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
-    "Method": "UpdateUser",
-    "RelativePath": "api/User/UpdateUser",
+    "Method": "UpdateUserInfo",
+    "RelativePath": "api/User/UpdateUserInfo",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -58,6 +138,38 @@
       {
         "Name": "reqMsg",
         "Type": "backend_csharp.Business.ViewModels.Account.UpdateUserRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
+    "Method": "UpdateUserLang",
+    "RelativePath": "api/User/UpdateUserLang",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reqMsg",
+        "Type": "backend_csharp.Business.ViewModels.Account.UpdateUserLangRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
+    "Method": "UpdateUserLevel",
+    "RelativePath": "api/User/UpdateUserLevel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reqMsg",
+        "Type": "backend_csharp.Business.ViewModels.Account.UpdateUserLevelRequest",
         "IsRequired": true
       }
     ],

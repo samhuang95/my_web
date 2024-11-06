@@ -1,6 +1,7 @@
 using backend_csharp.Models.Account;
 using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
+using backend_csharp.Models.Content;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,14 +17,26 @@ var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
 var dbUser = Environment.GetEnvironmentVariable("DB_USER");
 var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-var connectionString = builder.Configuration.GetConnectionString("AccountDBConnection")
+// 取得連接字串，並替換環境變數
+var accountConnectionString = builder.Configuration.GetConnectionString("AccountDBConnection")
     .Replace("${DB_SERVER}", dbServer)
     .Replace("${DB_USER}", dbUser)
     .Replace("${DB_PASSWORD}", dbPassword);
 
+var contentConnectionString = builder.Configuration.GetConnectionString("ContentDBConnection")
+    .Replace("${DB_SERVER}", dbServer)
+    .Replace("${DB_USER}", dbUser)
+    .Replace("${DB_PASSWORD}", dbPassword);
+
+// 註冊 AccountContext
 builder.Services.AddDbContext<AccountContext>(options =>
 {
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseMySql(accountConnectionString, ServerVersion.AutoDetect(accountConnectionString));
+});
+// 註冊 ContentContext
+builder.Services.AddDbContext<ContentContext>(options =>
+{
+    options.UseMySql(contentConnectionString, ServerVersion.AutoDetect(contentConnectionString));
 });
 
 

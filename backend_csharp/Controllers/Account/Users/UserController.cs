@@ -88,8 +88,8 @@ namespace backend_csharp.Controllers.Account.Users
             }
         }
 
-        [HttpPost("UpdateUser")]
-        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserRequest reqMsg)
+        [HttpPost("UpdateUserInfo")]
+        public async Task<IActionResult> UpdateUserInfo([FromBody] UpdateUserRequest reqMsg)
         {
             if (reqMsg == null)
             {
@@ -106,7 +106,7 @@ namespace backend_csharp.Controllers.Account.Users
             try
             {
                 var usersBI = new UsersBI(_context);
-                User result = await usersBI.UpdateUserBI(reqMsg);
+                User result = await usersBI.UpdateUserInfo(reqMsg);
 
                 // 如果找不到 User，回傳 404 Not Found
                 if (result == null)
@@ -126,6 +126,82 @@ namespace backend_csharp.Controllers.Account.Users
             }
         }
 
+        [HttpPost("UpdateUserLevel")]
+        public async Task<IActionResult> UpdateUserLevel([FromBody] UpdateUserLevelRequest reqMsg)
+        {
+            if (reqMsg == null)
+            {
+                var response = new ApiResponse<object>(ResponseStatusCode.BadRequest, "User object is null", null);
+                return BadRequest(response);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var response = new ApiResponse<object>(ResponseStatusCode.BadRequest, "Invalid model state", null);
+                return BadRequest(response);
+            }
+
+            try
+            {
+                var usersBI = new UsersBI(_context);
+                User result = await usersBI.UpdateUserLevel(reqMsg);
+
+                // 如果找不到 User，回傳 404 Not Found
+                if (result == null)
+                {
+                    var response = new ApiResponse<object>(ResponseStatusCode.NotFound, "User not found", null);
+                    return NotFound(response);
+                }
+
+                var apiResponse = new ApiResponse<User>(ResponseStatusCode.PostSuccess, "UpdateUserLevel successfully", result);
+                return Ok(apiResponse);
+            }
+            catch (Exception ex)
+            {
+                // 捕捉例外情況，返回 Internal Server Error
+                var response = new ApiResponse<object>(ResponseStatusCode.InternalServerError, $"An error occurred: {ex.Message}", null);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+
+        [HttpPost("UpdateUserLang")]
+        public async Task<IActionResult> UpdateUserLang([FromBody] UpdateUserLangRequest reqMsg)
+        {
+            if (reqMsg == null)
+            {
+                var response = new ApiResponse<object>(ResponseStatusCode.BadRequest, "User object is null", null);
+                return BadRequest(response);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var response = new ApiResponse<object>(ResponseStatusCode.BadRequest, "Invalid model state", null);
+                return BadRequest(response);
+            }
+
+            try
+            {
+                var usersBI = new UsersBI(_context);
+                User result = await usersBI.UpdateUserLang(reqMsg);
+
+                // 如果找不到 User，回傳 404 Not Found
+                if (result == null)
+                {
+                    var response = new ApiResponse<object>(ResponseStatusCode.NotFound, "User not found", null);
+                    return NotFound(response);
+                }
+
+                var apiResponse = new ApiResponse<User>(ResponseStatusCode.PostSuccess, "UpdateUserLang successfully", result);
+                return Ok(apiResponse);
+            }
+            catch (Exception ex)
+            {
+                // 捕捉例外情況，返回 Internal Server Error
+                var response = new ApiResponse<object>(ResponseStatusCode.InternalServerError, $"An error occurred: {ex.Message}", null);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
 
         [HttpPost("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest reqMsg)
