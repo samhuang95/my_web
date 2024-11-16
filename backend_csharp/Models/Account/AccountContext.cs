@@ -78,6 +78,9 @@ public partial class AccountContext : DbContext
             entity.Property(e => e.UserFirstName)
                 .HasMaxLength(45)
                 .HasColumnName("user_first_name");
+            entity.Property(e => e.UserImgUrl)
+                .HasColumnType("text")
+                .HasColumnName("user_img_url");
             entity.Property(e => e.UserLastName)
                 .HasMaxLength(45)
                 .HasColumnName("user_last_name");

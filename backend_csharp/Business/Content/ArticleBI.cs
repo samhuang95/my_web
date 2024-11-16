@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 using backend_csharp.Models.Content;
+using backend_csharp.Models.Account;
 using backend_csharp.Common.Constants;
 using backend_csharp.Business.ViewModels.Content;
-using backend_csharp.Business.ViewModels.Account;
-using backend_csharp.Common.UserValid;
 
 namespace backend_csharp.Business.Content
 {
     public class ArticleBI
     {
         private readonly ContentContext _context;
+        private readonly AccountContext _accountContext;
 
         public ArticleBI(ContentContext context)
         {
@@ -84,8 +84,8 @@ namespace backend_csharp.Business.Content
             try
             {
 
-                //// 創建 UserValid 的實例
-                //var userValidator = new UserValid(_context);
+                // 創建 UserValid 的實例
+                
 
                 //// 呼叫 ValidateUser 方法
                 //var userInfo = await userValidator.ValidateUser(reqMsg);

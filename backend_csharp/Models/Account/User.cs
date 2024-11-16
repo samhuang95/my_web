@@ -15,6 +15,8 @@ public partial class User
 
     public string Password { get; set; } = null!;
 
+    public string UserImgUrl { get; set; } = null!;
+
     public int UserLevelCode { get; set; }
 
     public int LangRecordCode { get; set; }

@@ -81,38 +81,6 @@
   },
   {
     "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
-    "Method": "DeleteUser",
-    "RelativePath": "api/User/DeleteUser",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "reqMsg",
-        "Type": "backend_csharp.Business.ViewModels.Account.DeleteUserRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
-    "Method": "GetUser",
-    "RelativePath": "api/User/GetUser",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "reqMsg",
-        "Type": "backend_csharp.Business.ViewModels.Account.GetUserRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
     "Method": "InsertUser",
     "RelativePath": "api/User/InsertUser",
     "HttpMethod": "POST",
@@ -122,54 +90,6 @@
       {
         "Name": "reqMsg",
         "Type": "backend_csharp.Business.ViewModels.Account.InsertUserRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
-    "Method": "UpdateUserInfo",
-    "RelativePath": "api/User/UpdateUserInfo",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "reqMsg",
-        "Type": "backend_csharp.Business.ViewModels.Account.UpdateUserRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
-    "Method": "UpdateUserLang",
-    "RelativePath": "api/User/UpdateUserLang",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "reqMsg",
-        "Type": "backend_csharp.Business.ViewModels.Account.UpdateUserLangRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend_csharp.Controllers.Account.Users.UserController",
-    "Method": "UpdateUserLevel",
-    "RelativePath": "api/User/UpdateUserLevel",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "reqMsg",
-        "Type": "backend_csharp.Business.ViewModels.Account.UpdateUserLevelRequest",
         "IsRequired": true
       }
     ],

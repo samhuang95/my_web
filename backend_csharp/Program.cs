@@ -2,6 +2,8 @@ using backend_csharp.Models.Account;
 using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
 using backend_csharp.Models.Content;
+using backend_csharp.Extensions;
+using backend_csharp.Business.Account;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,9 @@ builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// 註冊 UsersBI 和其介面
+builder.Services.AddScoped<IUsersBI, UsersBI>();
 
 // 取得環境變數
 var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
@@ -33,13 +38,15 @@ builder.Services.AddDbContext<AccountContext>(options =>
 {
     options.UseMySql(accountConnectionString, ServerVersion.AutoDetect(accountConnectionString));
 });
+
 // 註冊 ContentContext
 builder.Services.AddDbContext<ContentContext>(options =>
 {
     options.UseMySql(contentConnectionString, ServerVersion.AutoDetect(contentConnectionString));
 });
 
-
+// 使用擴展方法註冊所有服務
+builder.Services.RegisterApplicationServices();
 
 var app = builder.Build();
 
@@ -53,9 +60,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

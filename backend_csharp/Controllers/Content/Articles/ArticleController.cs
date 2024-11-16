@@ -105,6 +105,11 @@ namespace backend_csharp.Controllers.Content.Articles
 
             try
             {
+
+
+                //var userInfo = new UserValid()
+
+
                 var articleBI = new ArticleBI(_context);
                 List<Article> result = await articleBI.GetArticleListBI(reqMsg);
 
