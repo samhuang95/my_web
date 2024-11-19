@@ -36,8 +36,8 @@ namespace backend_csharp.Business.ViewModels.Account
         public int UserId { get; set; }
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
-        public string Email { get; set; }
         public string Password { get; set; }
+        public string UserImgUrl { get; set; }
         public int UpdateId { get; set; }
 
         public DateTime UpdateTime { get; set; }
