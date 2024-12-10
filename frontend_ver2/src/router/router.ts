@@ -36,6 +36,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/blog_page.vue'),
   },
   {
+    path: '/login',
+    name: RouteName.LOGIN,
+    component: () => import('../views/login_page.vue'),
+  },
+  {
+    path: '/management',
+    name: RouteName.MANAGEMENT,
+    component: () => import('../views/management_page.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/',
   },

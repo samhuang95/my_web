@@ -1,4 +1,5 @@
 import './assets/main.css'
+import './assets/app.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -6,6 +7,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router/router' // 匯入 router 而不是 routes
 import vuetify from './plugins/vuetify'
+
+import 'vuetify/styles' // 引入 Vuetify 樣式
 
 const app = createApp(App)
 

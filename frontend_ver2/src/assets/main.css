@@ -1,35 +1,72 @@
+/* ============== 基礎樣式 ============== */
 @import './base.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+/* 共用基礎樣式 */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  background-color: #ffffff;
 }
 
-a,
-.green {
+a {
   text-decoration: none;
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
   padding: 3px;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+a:hover {
+  background-color: hsla(160, 100%, 37%, 0.2);
+}
+
+/* ============== 手機版（< 768px）============== */
+@media (max-width: 767px) {
+  #app {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+  }
+
+  a {
+    font-size: 0.9rem;
   }
 }
 
-@media (min-width: 1024px) {
+/* ============== 電腦版（768px - 1919px）============== */
+@media (min-width: 768px) and (max-width: 1919px) {
+  #app {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    font-weight: normal;
+  }
+
+  a {
+    font-size: 1rem;
+  }
+}
+
+/* ============== 超大螢幕（>= 1920px）============== */
+@media (min-width: 1920px) {
   body {
-    display: flex;
-    place-items: center;
+    background-color: #ffffff;
   }
 
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    font-weight: normal;
+  }
+
+  a {
+    font-size: 1.2rem;
   }
 }
